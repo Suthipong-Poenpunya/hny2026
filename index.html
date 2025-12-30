@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy New Year 2026</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #020617; /* Slate 950 */
+      color: #f1f5f9; /* Slate 100 */
+      overflow-x: hidden;
+    }
+
+    /* Animation */
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+
+    /* ดาวกระพริบ */
+    .star {
+      position: absolute;
+      background-color: #fef08a;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.2); }
+    }
+
+    /* Debug */
+    .page-section {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .page-section.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Scrollbar สวยๆ */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+  <div id="stars-container"></div>
+  <!-- Gradient Orbs -->
+  <div class="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+  <div class="absolute top-0 right-0 w-96 h-96 bg-yellow-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+  <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+</div>
+
+<!-- ส่วนเนื้อหา -->
+
+<!-- PAGE 1: WELCOME -->
+<div id="page-intro" class="page-section active text-center">
+  <div class="mb-8 relative">
+    <h1 class="text-8xl md:text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-600 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]">
+      2026
+    </h1>
+    <div class="absolute -top-4 -right-4 text-yellow-200 animate-bounce">
+      <i data-lucide="sparkles" width="48" height="48"></i>
+    </div>
+  </div>
+  <h2 class="text-2xl md:text-3xl font-light tracking-widest text-slate-300 mb-2">
+    HAPPY NEW YEAR
+  </h2>
+  <p class="text-lg text-slate-400 mb-12">
+   From Title To   <span id="recipient-name" class="text-yellow-400 font-semibold"></span>
+  </p>
+  <button onclick="nextPage(1)" class="group relative px-8 py-4 bg-slate-800/50 backdrop-blur-sm border border-yellow-500/30 rounded-full text-yellow-400 hover:bg-yellow-500 hover:text-slate-900 transition-all duration-300 shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:shadow-[0_0_40px_rgba(234,179,8,0.6)] flex items-center gap-3 text-lg cursor-pointer">
+    <i data-lucide="gift"></i>
+    <span>เปิดอ่านจดหมาย</span>
+    <i data-lucide="chevron-right" class="group-hover:translate-x-1 transition-transform"></i>
+  </button>
+</div>
+
+<!-- PAGE 2: MESSAGES -->
+<div id="page-message" class="page-section">
+  <div class="bg-slate-900/40 backdrop-blur-md p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl w-full max-w-2xl min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+    <span class="absolute top-4 left-6 text-6xl text-white/5 font-serif">"</span>
+    <span class="absolute bottom-4 right-6 text-6xl text-white/5 font-serif">"</span>
+
+    <p id="message-text" class="text-xl md:text-3xl text-center leading-relaxed font-light transition-all duration-500 transform opacity-100 translate-y-0">
+      <!-- Script -->
+    </p>
+
+    <!-- Progress Bar -->
+    <div class="absolute bottom-0 left-0 w-full h-1 bg-slate-800">
+      <div id="message-progress" class="h-full bg-gradient-to-r from-yellow-400 to-purple-500 transition-all duration-500" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <button onclick="nextMessage()" class="mt-12 animate-bounce p-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 transition-all cursor-pointer">
+    <div id="btn-next-msg-icon">
+      <i data-lucide="arrow-down" class="text-yellow-400"></i>
+    </div>
+    <div id="btn-finish-msg" class="hidden flex items-center gap-2 px-4 text-yellow-400 font-semibold">
+      <span>ไปต่อ</span>
+      <i data-lucide="chevron-right"></i>
+    </div>
+  </button>
+
+  <p id="message-counter" class="mt-4 text-xs text-slate-500 uppercase tracking-widest"></p>
+</div>
+
+<!-- PAGE 3: VIDEO -->
+<div id="page-video" class="page-section text-center">
+  <div class="mb-8">
+    <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center gap-2">
+      <i data-lucide="music"></i>
+      Special Song For You
+    </h3>
+    <p class="text-slate-400 text-sm mt-2">ตั้งใจเลือกเพลงนี้มาให้ ลองฟังดูนะ (กดเล่นแล้วไปหน้าถัดไปได้เลยนะ)</p>
+  </div>
+
+  <div class="w-full max-w-3xl aspect-video bg-slate-900 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.2)] overflow-hidden border border-white/10 relative">
+    <iframe
+      id="youtube-frame"
+      class="w-full h-full"
+      src=""
+      title="เพลงนี้ตั้งใจเลือกมาให้เลยจ่ะ"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <button onclick="nextPage(3)" class="mt-10 px-8 py-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium hover:scale-105 transition-transform shadow-lg shadow-purple-500/20 flex items-center gap-2 cursor-pointer">
+    <span>ดูภาพความทรงจำ</span>
+    <i data-lucide="rewind"></i>
+  </button>
+</div>
+
+<!-- PAGE 4: REWIND -->
+<div id="page-rewind" class="page-section overflow-y-auto block pt-20">
+  <div class="w-full max-w-4xl mx-auto pb-20">
+    <div class="text-center mb-16">
+      <div class="inline-block p-3 rounded-full bg-yellow-400/10 mb-4">
+        <i data-lucide="image" class="w-8 h-8 text-yellow-400"></i>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-500">
+        Our Memories in 2025
+      </h2>
+      <p class="text-slate-400">ความทรงจำของเราตลอดปีที่ผ่านมา</p>
+    </div>
+
+    <div id="gallery-container" class="space-y-16">
+      <!-- Script -->
+    </div>
+
+    <div class="py-16 text-center border-t border-white/5 mt-16">
+      <h3 class="text-2xl text-white mb-6">เดินทางสู่ Chapter ใหม่ที่ชื่อว่า 2026 ไปด้วยกันนะครับ</h3>
+      <h3 class="text-2xl text-white mb-6">เค้ารวมอัลบั้มของเธอสำหรับปีนี้ไว้ด้วยน้าาา</h3>
+      <a href="https://photos.app.goo.gl/ZQuWxV94woi8kPvD6" target="_blank"
+         class="px-6 py-2 rounded-full border border-slate-600 text-slate-400 hover:text-white hover:border-white hover:bg-white/5 transition-all text-sm cursor-pointer inline-block">
+        ดูอัลบั้มรูป
+      </a>
+      <button onclick="location.reload()" class="px-6 py-2 rounded-full border border-slate-600 text-slate-400 hover:text-white hover:border-white hover:bg-white/5 transition-all text-sm cursor-pointer">
+        กลับไปหน้าแรก
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Config ---
+  const CONFIG = {
+    recipientName: "Ashlee", // ชื่อผู้รับที่จะแสดงหน้าแรก
+
+    // ข้อความ
+    messages: [
+      "สวัสดีปีใหม่ 2569 นะครับบ ",
+      "ผ่านไปอีกปีหนึ่ง มันรวดเร็วจริงๆ",
+      "แต่ปีนี้มันดี เพราะมีเธอเข้ามาในชีวิต",
+      "ดีใจที่เราข้ามผ่านปี 2568 ด้วยกันมาได้นะครับ",
+      "ปี 2568 อาจจะมีเรื่องราวต่างๆ มากมาย ทั้งสุข ทั้งทุกข์ ทั้งสนุก ทั้งเหนื่อย",
+      "แต่ทุกอย่างมันดี และดียิ่งขึ้น เพราะมีเธออยู่ในช่วงเวลานั้น",
+      "ขอให้ปี 2569 นี้ เป็นปีที่ใจดีกับเธอ มีความสุขในทุกๆ วัน",
+      "ขอให้งานไม่หนัก เรียนไม่เหนื่อย สนุกในทุกๆ อย่างที่เธอทำน้าา",
+      "อยู่ด้วยกันไปเรื่อยๆ เลยนะ อยากทำแบบนี้ให้อีกในปีถัดไป555 สุขสันต์วันปีใหม่ครับ ❤️"
+    ],
+
+    // คลิป
+    youtubeId: "M8Ao4NeNhFE?si=HqE-Oy_qexegVXjJ",
+
+    // img
+    gallery: [
+      {text: "31 สิงหาคม - ภาพถ่ายภาพแรก จุดเริ่มต้นของเรา", img: "img/photos/IMG_0140.JPG"},
+      { text: "5 กันยายน - สืบนาคะเสถียร ไม่รู้ไปกวนเธอมากมั้ย แต่ดีใจที่ได้ไปร่วมงานนี้นะ", img: "https://i.ibb.co/20DGx3Jb/IMG-5172.avif" },
+      { text: "6 กันยายน - ร้านสมพรปาก เป็นวันที่ฝ่าฝนด้วยกัน มอมสุดๆ55 ขอบคุณที่อยู่ฝ่าฝนด้วยกันนะ", img: "https://i.ibb.co/4ZxYQHv9/IMG-9920.jpg" },
+      { text: "11 กันยายน - iPad หาย! เป็นวันที่เค้าโครตเศร้า แต่อย่างน้อยก็ได้กำลังใจดีๆ จากเธอ", img: "https://i.ibb.co/ZzGbZRb5/IMG-5419.avif" },
+      { text: "14 กันยายน - Swing Dance เป็นงานที่เปิดโลกเค้ามาก เพราะเค้าไม่เคยออกไปเที่ยวงานแบบนี้ ปกตินอนอยู่แต่ห้อง ของคุณที่พาไปเจออะไรใหม่ๆ", img: "https://i.ibb.co/4wwsfBDg/07011-AAF-6-D09-42-C4-8-ABC-51-B1-A3-CD4-E5-D.jpg" },
+      { text: "20 กันยายน - สเต๊กอาม่า ร้านนี้คุ้มจริงๆ เนาะ ถึงกับต้องห่อกลับเลย555", img: "https://i.ibb.co/21TY9f3R/7-E1-BF581-06-D3-431-E-A17-E-105600-CBAD8-B.jpg" },
+      { text: "27 กันยายน - Demon Slayer เป็นหนัง Fantasy เรื่องแรกที่เค้าเคยดูเลย แล้วเค้าชอบมาก อยากเป็นทันจิโร่", img: "https://i.ibb.co/B5bCbzQn/IMG-6009.avif" },
+      { text: "3 ตุลาคม - สวนเบญจกิติ ว่าจะไปปั่นเป็ด แต่...555 ก็ถือว่าไปนั่งชมวิวล้ากานน", img: "https://i.ibb.co/Wp0yRXzK/IMG-6193.avif" },
+      { text: "3 ตุลาคม - Bangkok Climate Action Week งานที่ยกดวงจันทร์มาไว้ที่สวน ถึงแม้ไม่ได้ทำกำไล แต่เราก็ได้ถ่ายรูปกับพรระจันทร์ที่สวยมากๆ", img: "https://i.ibb.co/v6P6Qy8n/IMG-6211.avif" },
+      { text: "4 ตุลาคม - 5km ที่สวนเบญจิติ ไปตั้งแต่ 7 โมงเช้า กลับมาอีกที บ่ายสอง เพราะติดอยู่งาน SX Expo ติดลมสุบๆ", img: "https://i.ibb.co/RG0scWRR/IMG-6387.avif" },
+      { text: "4 ตุลาคม - ได้พายเรือแล้วววว บรรรยากาศดีสุดๆ", img: "https://i.ibb.co/S4ZbbNTT/IMG-6399.avif" },
+      {text: "14 ตุลาคม - บิงซูแสนอร่อย กับการอ่านหนังสือวิชามัลติมีเดีย จนเค้าอายุ 20", img: "https://i.ibb.co/CsTMWRJy/IMG-6824.avif"},
+      {text: "15 ตุลาคม - Tle Birthday ขอบคุณเซอร์ไพรส์ดีๆ ที่เธอมอบให้ และขอโทษที่วันนั้นอาจจะดูแลเธอได้ไม่ดีมาก น่าจะพาเธอไป รพ. แม่สาวกรดไหลย้อนน ขอบคุณที่เธออยู่กับเค้าแม้ไม่สบายตัวนะ", img: "https://i.ibb.co/d4rSBJNX/IMG-6852.avif"},
+      {text: "23 ตุลาคม - ไหว้พระวันเกิด เที่ยววัดพระเชตุพน-วัดอรุณ ล่องเรือแม้น้ำเจ้าพระยา สะสมบุญสุดๆ วันนี้ ไว้เดี๋ยวตาวันเกิดเธอ เค้าพาไปบ้างง", img: "https://i.ibb.co/1ySm6Pg/IMG-7267.avif"},
+      {text: "23 ตุลาคม - เอเชียทีค ได้ไปเที่ยวที่นี่ด้วยกันซักที ดีไม่โดน miniso ตกก555", img: "https://i.ibb.co/tMTMZXKG/IMG-7281.avif"},
+      {text: "4 พฤศจิกายน - It's Final Day Of Choir นี่เป็นวันที่เธอสง่าสุดๆ บนเวที So Proud Of You!", img: "https://i.ibb.co/PG9b72hp/C077-B2-A3-5285-4163-B196-A964-A5325-C9-C.jpg"},
+      {text: "5 พฤศจิกายน - ลอยกระทงครั้งแรกกับผู้หญิงที่ไม่ใช่แม่55555", img: "https://i.ibb.co/G423y55R/IMG-7962.avif"},
+      {text: "20 พฤศจิกายน - เที่ยวแรกของเจ้า Click คันใหม่ หลังจากนี้ ไปได้ทุกที่ ไม่ต้องพึ่งรถสาธารณะ", img: "https://i.ibb.co/n807F9c5/IMG-8359.avif"},
+      {text: "20 พฤศจิกายน - First Time Viking ของเติ้น ดูจากหน้าจะรู้ว่ารู้สึกอย่างไร555555", img: "https://i.ibb.co/8L0Ft0Hy/47-AFFB3-E-A53-D-4-E2-A-995-F-74-FA64522494.jpg"},
+      {text: "25 พฤศจิกายน - ธี่หยด 3 กับวันที่ตั๋วหนังเหลือ 29 บาท คุ้มสุบๆ ไม่ใช่เพราะมันถูก แต่มันเพราะได้ดูด้วยกัน", img: "https://i.ibb.co/Q79BsMQM/IMG-8485.avif"},
+      {text: "1 ธันวาคม - รูปนี้เป็นรูปที่เค้าพยายามถ่ายเธอกับหมวกสีชมพูน่ารัก555 แต่เธอไม่ยอม ภาพที่ออกมาเลย555555", img: "https://i.ibb.co/LzP9cxDD/IMG-8615.avif"},
+      {text: "5 ธันวาคม - วันพ่อ ที่หนึ่งนมนัว รูปนี้ลงมาเพราะชอบล้วนๆ5555 เคาะพายายมถ่ายรูปให้ติดเธอ แต่เธอหลบให้55555", img: "https://i.ibb.co/RWRT5dz/IMG-8678.avif"},
+      {text: "6 ธันวาคม - First Chrismas Gift นี่เป็นของขวัญที่พิเศษมากๆ และอรร่อยสุดๆ ช่วยเติมพลังตอนทำงานมากๆ เสียดายที่เค้าซื่อเกินไปว่าเธออยากจะลองชิม ฮือออ ขอโทษคับ เดี๋ยวรอเค้าเซอร์ไพรส์กลับๆ", img: "https://i.ibb.co/xqH1FpB5/IMG-8688.avif"},
+      {text: "8 ธันวาคม - ไปรับเธอ ณ ที่ทำงาน Emsphere แม้รถจะติด แต่อย่างน้อยไปเจอเธอ ความเหนื่อยจากรถติดก็หายไปเลย บอกตรง กะจะไปเซอร์ไพรส์ เดินหาบูทเธอในที่นั่นวันอยู่ 3 รอบ (แต่วนไปไม่โดนโซนเธอ) จนต้องโทรหาเธอ555", img: "https://i.ibb.co/bRgmP5C4/IMG-8738.avif"},
+      {text: "8 ธันวาคม - Once bitten and twice shy เป็นคลิป TikTok มากๆ เลย ขอบคุณ idea เธอที่ทำคลิปนี้ มันน่ารักจริงๆ love love", img: "https://i.ibb.co/jvy7ZyQF/IMG-8785.avif"},
+      {text: "12 ธันวาคม - รับรางวัลที่เราส่งปรระกวดด้วยกันแบบจอยๆ สุดๆ555 แต่สุดจรริงนะ ขนาดเราทำจอยๆ ยังติดชมเชย ทั้งที่คนส่งกันเยอะมาก นี่แหละ คอนเทนต์ดี สุดยอดด", img: "https://i.ibb.co/Xhr8R1s/IMG-8926.avif"},
+      {text: "15 ธันวาคม - วันที่ที่เราไปดูงานไฟด้วยกัน ขอบคุณณเธอที่ชวนไปงานนี้ มันสวยจริงๆ แล้วกับการมีมอเตอร์ไซค์ เลยพาไปจอยมันซะทุกที่เลย และทุกที่มันมีความหมายจริงๆ", img: "https://i.ibb.co/wZByzVyb/IMG-9094.avif"},
+      {text: "25 ธันวาคม - ขอบคุณที่ปิดท้ายปีด้วยกัน บอกตรง เค้านอยและดีใจในเวลาเดียวกัน5555555 นอยเพราะเธอไปไต้หวัน คงไม่มีเวลาแน่ๆ หางกันถึง 2,486 กิโลเมตร เป็นห่งเธอจริงๆ อย่างน้อยก็สบายใจที่มีแม่อยู่ด้วย คิดถึงเธอนะ รอมาเจอเธออีกครั้ง ขอบคุณที่อยู่ด้วยกันจนข้ามปี สัญญาจะรักและดูแลเธอให้ดี แม้จะขี้งอนไปบ้าง แต่จะพยายาามงอนให้น้อยลงนะ555 ขอบคุที่อยู่ด้วยกันในชีวิต Share ชีวิตร่วมกัน", img: "https://i.ibb.co/7d8YpKXN/IMG-9479.avif"},
+      {text: "24 สิงหาคม - @Pattaya Happy New Year 2026 นะครับ ขอบคุณณที่ทำให้ปีนี้เป็นปีที่มีความหมายสำหรับเค้า ขอบคุณสำหรับทุกอ่างที่เธอให้เค้าในปีนี้ และปีหน้าสัญญาจะดูแลเธอให้ดียึ่งขึ้นอีก อะไรที่ไม่ดีในชีวิต ทิ้งไว้ในปี 2025 นะครับ แล้วมาเริ่มต้นปีที่แสนวิเศษกันในปี 2025 ด้วยกันนะครับ ยินดีต้อนรับสู่ปี 2026 นะครับ ลุยปีนี้ไปด้วยกันน",  img: "https://i.ibb.co/v61c2s89/IMG-9436.jpg"},
+    ]
+  };
+
+  // --- System Modules ---
+  let currentMsgIndex = 0;
+
+  // เริ่มต้นทำงานเมื่อโหลดเสร็จ
+  window.onload = function() {
+    lucide.createIcons(); // สร้างไอคอน
+    renderStars(); // สร้างดาว
+    setupData(); // ใส่ข้อมูลจาก CONFIG
+  };
+
+  function setupData() {
+    // หน้า 1
+    document.getElementById('recipient-name').innerText = CONFIG.recipientName;
+
+    // หน้า 2
+    updateMessageUI();
+
+    // หน้า 3
+    document.getElementById('youtube-frame').src = `https://www.youtube.com/embed/${CONFIG.youtubeId}?rel=0`;
+
+    // หน้า 4
+    const galleryDiv = document.getElementById('gallery-container');
+    CONFIG.gallery.forEach((item, index) => {
+      const isEven = index % 2 === 0;
+      const html = `
+                    <div class="flex flex-col md:flex-row gap-8 items-center ${!isEven ? 'md:flex-row-reverse' : ''}">
+                        <div class="w-full md:w-1/2 relative group">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                            <div class="relative rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl aspect-[4/3]">
+                                <img src="${item.img}" alt="${item.text}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 text-center md:text-left space-y-4">
+                            <div class="text-6xl font-bold text-white/5 font-serif select-none">0${index + 1}</div>
+                            <h3 class="text-2xl font-semibold text-yellow-100">${item.text.split(' - ')[0]}</h3>
+                            <p class="text-slate-300 leading-relaxed text-lg">${item.text.split(' - ')[1] || item.text}</p>
+                        </div>
+                    </div>
+                `;
+      galleryDiv.innerHTML += html;
+    });
+  }
+
+  // ฟังก์ชันเปลี่ยนหน้า
+  function nextPage(pageIndex) {
+    // ซ่อนทุกหน้า
+    document.querySelectorAll('.page-section').forEach(el => {
+      el.classList.remove('active');
+      if(el.id === 'page-rewind') el.style.display = 'none'; // ซ่อน rewind แบบเด็ดขาด
+    });
+
+    // แสดงหน้าที่ต้องการ
+    const pages = ['page-intro', 'page-message', 'page-video', 'page-rewind'];
+    const targetId = pages[pageIndex];
+    const targetEl = document.getElementById(targetId);
+
+    if (targetId === 'page-rewind') {
+      targetEl.style.display = 'block'; // rewind ต้องใช้ block เพื่อ scroll
+      setTimeout(() => targetEl.classList.add('active'), 50);
+    } else {
+      targetEl.classList.add('active');
+    }
+
+    window.scrollTo(0, 0);
+  }
+
+  // ฟังก์ชันข้อความถัดไป
+  function nextMessage() {
+    if (currentMsgIndex < CONFIG.messages.length - 1) {
+      // เอฟเฟกต์ Fade out
+      const msgEl = document.getElementById('message-text');
+      msgEl.style.opacity = '0';
+      msgEl.style.transform = 'translateY(10px)';
+
+      setTimeout(() => {
+        currentMsgIndex++;
+        updateMessageUI();
+        // Fade in
+        msgEl.style.opacity = '1';
+        msgEl.style.transform = 'translateY(0)';
+      }, 300);
+    } else {
+      // ถ้าหมดแล้ว ไปหน้า Video
+      nextPage(2);
+    }
+  }
+
+  function updateMessageUI() {
+    document.getElementById('message-text').innerText = CONFIG.messages[currentMsgIndex];
+
+    // Update Progress Bar
+    const progress = ((currentMsgIndex + 1) / CONFIG.messages.length) * 100;
+    document.getElementById('message-progress').style.width = `${progress}%`;
+    document.getElementById('message-counter').innerText = `${currentMsgIndex + 1} / ${CONFIG.messages.length}`;
+
+    // เปลี่ยนปุ่มเมื่อถึงข้อความสุดท้าย
+    if (currentMsgIndex === CONFIG.messages.length - 1) {
+      document.getElementById('btn-next-msg-icon').classList.add('hidden');
+      document.getElementById('btn-finish-msg').classList.remove('hidden');
+      document.getElementById('btn-finish-msg').classList.add('flex');
+    }
+  }
+
+  // สร้างดาวพื้นหลัง
+  function renderStars() {
+    const container = document.getElementById('stars-container');
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.width = `${Math.random() * 3 + 1}px`;
+      star.style.height = star.style.width;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      container.appendChild(star);
+    }
+  }
+</script>
+</body>
+</html>
